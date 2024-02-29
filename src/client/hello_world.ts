@@ -92,6 +92,12 @@ export async function establishConnection(): Promise<void> {
    version from the connection object. */
 
   //Insert the Step 1 code from the tutorial here
+
+// Step 1: Connect to your local Solana Devnet
+connection = new Connection("http://127.0.0.1:8899","confirmed");
+const version = await connection.getVersion();
+console.log('Connection to cluster established:', version);
+
 }
 
 /**
@@ -102,10 +108,24 @@ export async function establishPayer(): Promise<void> {
   //Step 2: Generate a keypair - this would be an account that pays for the calls to the program
   
   //Insert the Step 2 code from the tutorial here
+
+  //Step 2: Generate a keypair - this would be an account that pays for the calls to the program
+payer = Keypair.generate();
+console.log("Public Key of Payer is:", payer.publicKey.toString());
+
   
   //Step 3: Requesting an airdrop
 
    //Insert the Step 3 code from the tutorial here
+
+//Step 3: Requesting an airdrop
+const sig = await connection.requestAirdrop(
+  payer.publicKey,
+  2 * LAMPORTS_PER_SOL,
+);
+
+await connection.confirmTransaction(sig);
+
    
   console.log(
     'Using account',
